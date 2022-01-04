@@ -1,9 +1,8 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-from UniformCostSearch import UniformCostSearch
 
-filePath = "C:/Users/Acer/IdeaProjects/AIProject/generated_maze.txt"
+filePath = "generated_maze.txt"
 
 with open(filePath, "r") as file:
     matrix = [
