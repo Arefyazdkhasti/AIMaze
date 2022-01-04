@@ -31,7 +31,7 @@ nx.draw(G, with_labels=True)
 
 graph = dict()
 
-'''
+
 # به ازای هر نود مقصدهای اون نود رو توی ارایه way_list دخیره میکنیم و داخل دیکشنری graph میریزیم
 for i in nx.nodes(G):
     way_list = []
@@ -44,7 +44,7 @@ for i in nx.nodes(G):
 
 for i in graph:
     print(i, graph[i])
-'''
+
 
 for i in range(0, 20):
     for j in range(0, 20):
