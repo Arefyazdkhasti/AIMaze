@@ -78,12 +78,6 @@ public class Maze {
             e.printStackTrace();
         }
 
-        /*- --WWW- -
-       ---W--- W
-       -WW H -- H  -
-       ---WW-- -
-       ----- H - -;*/
-
         /*String[][] arr = {{"-", "-", "-", "W", "-", "-", "-", "-"},
                 {"-", "-", "-", "W", "-", "-", "-", "-"},
                 {"W", "W", "W", "W", "-", "-", "-", "-"},
@@ -172,85 +166,4 @@ public class Maze {
 
         return (arr[row-1][col-1] == 1);
     }
-
-
-    /*private static Graph generateGraph(String[][] matrix, int row, int col) {
-        int vectors = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (!matrix[i][j].equals("W") || !matrix[i][j].equals(" H ")) {
-                    vectors++;
-                }
-            }
-        }
-        System.out.println("vectors: " + vectors);
-        Graph g = new Graph(vectors);
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (!matrix[i][j].equals("W") || !matrix[i][j].equals(" H ")) {
-                    if (i != j) {
-                        g.addEdge(i, j);
-                        System.out.println("added edge: " + i + " " + j);
-                    }
-                }
-            }
-        }
-
-        return g;
-    }
-*/
 }
-
-/*class Graph {
-    private int V; // No. of vertices
-
-    // Array  of lists for
-    // Adjacency List Representation
-    private LinkedList<Integer> adj[];
-
-    // Constructor
-    @SuppressWarnings("unchecked")
-    Graph(int v) {
-        V = v;
-        adj = new LinkedList[v];
-        for (int i = 0; i < v; ++i)
-            adj[i] = new LinkedList();
-    }
-
-    // Function to add an edge into the graph
-    void addEdge(int v, int w) {
-        adj[v].add(w); // AddWto v's list.
-    }
-
-    // A function used by DFS
-    void DFSUtil(int v, boolean visited[]) {
-        // Mark the current node as visited and print it
-        visited[v] = true;
-        System.out.print(v + " ");
-
-        // Recur for all the vertices adjacent to this
-        // vertex
-        Iterator<Integer> i = adj[v].listIterator();
-        while (i.hasNext()) {
-            int n = i.next();
-            if (!visited[n])
-                DFSUtil(n, visited);
-        }
-    }
-
-    // The function to do DFS traversal.
-    // It uses recursive
-    // DFSUtil()
-    void DFS(int v) {
-        // Mark all the vertices as
-        // not visited(set as
-        // false by default in java)
-        boolean visited[] = new boolean[V];
-
-        // Call the recursive helper
-        // function to print DFS
-        // traversal
-        DFSUtil(v, visited);
-    }
-}*/
-
