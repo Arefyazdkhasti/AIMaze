@@ -1,6 +1,7 @@
 from colorama import Fore
 from Astar import AStar
 from UniformCostSearch import UniformCostSearch
+from IterativeDeepeningSearch import IterativeDeepeningSearch
 
 filePath = "generated_maze.txt"
 
@@ -58,6 +59,17 @@ for i in range(0, 20):
 
 
 # plt.show()
+
+ids = IterativeDeepeningSearch(binaryMatrix1, (0,0), (3,6))
+numberOfVisitedNodes, IterativeParent, IterativeCounter = ids.iterative_search(400)
+path_list = ids.getPath()
+print ("--")
+print(path_list)
+print(numberOfVisitedNodes)
+print(IterativeParent)
+print(IterativeCounter)
+print ("--")
+
 
 
 def printMatrixWithPath(algorithm_name, _matrix, path, expandedNodes = 0):
