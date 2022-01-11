@@ -129,23 +129,25 @@ if holeLessPathForFirstDst:
                 binaryMatrix0_pashmam[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
-    if (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 4, 8)):
-        for row in range(0, 4):
+    if (isPath(matrix_with_holes_as_wall, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 4, 8)):
+        for row in range(0, 6):
             for col in range(0, 7):
                 if matrix[row][col] == 'H':
                     binaryMatrix0[row][col] = 1
                     binaryMatrix0_pashmam[row][col] = 1
 
 if holeLessPathForSecondDst:
-    for row in range(3, 16):
-        for col in range(7, 16):
+    for row in range(3, 20):
+        for col in range(7, 20):
             if matrix[row][col] == 'H':
                 binaryMatrix0[row][col] = 1
                 binaryMatrix0_pashmam[row][col] = 1
 else:
-    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 18, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 16, 17):
-        for row in range(3, 16):
-            for col in range(7, 16):
+    for i in matrix_with_holes_as_wall_with_one:
+        print(i)
+    if isPath(matrix_with_holes_as_wall, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall, 0, 0, 18, 16) or isPath(matrix_with_holes_as_wall, 0, 0, 16, 17):
+        for row in range(3, 20):
+            for col in range(7, 20):
                 if matrix[row][col] == 'H':
                     binaryMatrix0[row][col] = 1
 
@@ -179,7 +181,7 @@ matrix_IDDFS = copy.deepcopy(matrix)
 matrix_AStar = copy.deepcopy(matrix)
 matrix_USF = copy.deepcopy(matrix)
 matrix_BFS = copy.deepcopy(matrix)
-
+binaryMatrix0_IDDFS = copy.deepcopy(binaryMatrix0)
 
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
     print(colored("------------------------- Algorithm: " + algorithm_name + "------------------------", 'green'))
@@ -217,16 +219,16 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
 
 # todo path for IDDFS is wrong - hole BFS return wrong due to wrong adjacency list which not updated with holes
 
-
 # region A*
 src1 = (0, 0)
 dst1 = (3, 6)
 aStar = AStar(binaryMatrix0)
 path1_AStar = aStar.aStar(src1, dst1)
+aStar_traversal1 = []
+aStar_traversal2 = []
 
 if len(path1_AStar) != 0:
 
-    aStar_traversal1 = []
     for item in path1_AStar:
         item = item[0] * 20 + item[1]
         aStar_traversal1.append(item)
@@ -240,7 +242,6 @@ path2_AStar = aStar.aStar(src2, dst2)
 
 if len(path2_AStar) != 0:
 
-    aStar_traversal2 = []
     for item in path2_AStar:
         item = item[0] * 20 + item[1]
         aStar_traversal2.append(item)
@@ -275,11 +276,11 @@ printMatrixWithPath("Uniform Cost Search", matrix_USF, traversal_ucs)
 
 # region IDDFS
 
-ids1 = IterativeDeepeningSearch(binaryMatrix0_pashmam, (0, 0), (3, 6))
+ids1 = IterativeDeepeningSearch(binaryMatrix0_IDDFS, (0, 0), (3, 6))
 numberOfVisitedNodes, IterativeParent, IterativeCounter = ids1.iterative_search(400)
 path_list1_iddfs = ids1.getPath()
 
-ids2 = IterativeDeepeningSearch(binaryMatrix0_pashmam, (3, 6), (15, 15))
+ids2 = IterativeDeepeningSearch(binaryMatrix0_IDDFS, (3, 6), (15, 15))
 numberOfVisitedNodes2, IterativeParent2, IterativeCounter2 = ids2.iterative_search(400)
 path_list2_iddfs = ids2.getPath()
 
@@ -353,7 +354,7 @@ final_path_bfs.remove(66)
 
 print("bfs path final ----------------> ", final_path_bfs)
 
-printMatrixWithPath("BFS", matrix_BFS, path_bfs1)
+printMatrixWithPath("BFS", matrix_BFS, final_path_bfs)
 # endregion
 
 '''
