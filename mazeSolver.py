@@ -1,3 +1,4 @@
+import copy
 from Astar import AStar
 from UniformCostSearch import UniformCostSearch
 from IterativeDeepeningSearch import IterativeDeepeningSearch
@@ -45,19 +46,19 @@ for row in range(0, 20):
 # endregion
 
 def isPath(_arr, start_row, start_col, dst_row, dst_col):
+    arr = copy.deepcopy(_arr)
     # directions
     Dir = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
     # queue
     q = [(start_row, start_col)]
-
     # until queue is empty
     while len(q) > 0:
         p = q[0]
         q.pop(0)
 
         # mark as visited
-        _arr[p[0]][p[1]] = -1
+        arr[p[0]][p[1]] = -1
 
         # destination is reached.
         if p == (dst_row - 1, dst_col - 1):
@@ -70,7 +71,7 @@ def isPath(_arr, start_row, start_col, dst_row, dst_col):
             a = p[0] + Dir[i][0]
             b = p[1] + Dir[i][1]
 
-            if (0 > a or a >= dst_row) or (0 > b or b >= dst_col) or _arr[a][b] == -1:
+            if (0 > a or a >= dst_row) or (0 > b or b >= dst_col) or arr[a][b] == -1:
                 continue
             # not blocked and valid
             q.append((a, b))
@@ -128,7 +129,6 @@ if holeLessPathForFirstDst:
                 binaryMatrix0_pashmam[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
-    print(isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7), isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7),isPath(matrix_with_holes_as_wall_with_one, 0, 0, 4, 8))
     if (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 4, 8)):
         for row in range(0, 4):
             for col in range(0, 7):
@@ -175,9 +175,10 @@ for i in range(0, 20):
 
 # endregion
 
-matrix_IDDFS = matrix
-matrix_AStar = matrix
-matrix_USF = matrix
+matrix_IDDFS = copy.deepcopy(matrix)
+matrix_AStar = copy.deepcopy(matrix)
+matrix_USF = copy.deepcopy(matrix)
+matrix_BFS = copy.deepcopy(matrix)
 
 
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
@@ -352,7 +353,7 @@ final_path_bfs.remove(66)
 
 print("bfs path final ----------------> ", final_path_bfs)
 
-printMatrixWithPath("BFS", matrix, path_bfs1)
+printMatrixWithPath("BFS", matrix_BFS, path_bfs1)
 # endregion
 
 '''
