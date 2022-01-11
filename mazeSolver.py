@@ -128,9 +128,8 @@ if holeLessPathForFirstDst:
                 binaryMatrix0_pashmam[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
-    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5,
-                                                                        7) or isPath(
-        matrix_with_holes_as_wall_with_one, 0, 0, 4, 8):
+    print(isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7), isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7),isPath(matrix_with_holes_as_wall_with_one, 0, 0, 4, 8))
+    if (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall_with_one, 0, 0, 4, 8)):
         for row in range(0, 4):
             for col in range(0, 7):
                 if matrix[row][col] == 'H':
@@ -144,9 +143,7 @@ if holeLessPathForSecondDst:
                 binaryMatrix0[row][col] = 1
                 binaryMatrix0_pashmam[row][col] = 1
 else:
-    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 18,
-                                                                          16) or isPath(
-        matrix_with_holes_as_wall_with_one, 0, 0, 16, 17):
+    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 18, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 16, 17):
         for row in range(3, 16):
             for col in range(7, 16):
                 if matrix[row][col] == 'H':
@@ -294,6 +291,7 @@ for item in path_IDDFS:
     final_path_IDDFS.append(item[0] * 20 + item[1])
 
 printMatrixWithPath("Iterative Deepening Search", matrix_IDDFS, final_path_IDDFS)
+
 
 # endregion
 
