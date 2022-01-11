@@ -6,22 +6,22 @@ class AStar:
     def __init__(self, matrix):
         self.matrix = matrix
 
-    counter = 0
+    expandNodeCounter = 0
     visited = {}
 
-    def heuristic(self, dst, i, j):
+    @staticmethod
+    def heuristicFunction(dst, i, j):
         return abs(dst[0] - i) + abs(dst[1] - j)
 
-    def aStar(self, src, dst, matrix):
-        global counter, visited
-        counter = 0
+    def aStar(self, src, dst):
+        global expandNodeCounter, visited
+        expandNodeCounter = 0
 
-        width = len(matrix[0])
-        height = len(matrix)
+        width = len(self.matrix[0])
+        height = len(self.matrix)
 
-        # small variation for easier code, state is (coord_tuple, previous, path_cost, heuristic_cost)
-        frontier = [
-            (self.heuristic(dst, src[0], src[1]), (src[0], src[1]), list(), 0, self.heuristic(dst, src[0], src[1]))]
+        frontier = [(self.heuristicFunction(dst, src[0], src[1]), (src[0], src[1]), list(), 0,
+                     self.heuristicFunction(dst, src[0], src[1]))]
         heapq.heapify(frontier)
         visited = {}
         state = 0
@@ -40,14 +40,15 @@ class AStar:
             # set the cost (path is enough since the heuristic won't change)
             visited[(i, j)] = state[3]
             # explore neighbor
+            # change > 0 to < 1 in order to use binary matrix 0
             neighbor = list()
-            if i > 0 and matrix[i - 1][j] > 0:  # top
+            if i > 0 and self.matrix[i - 1][j] < 1:  # top
                 neighbor.append((i - 1, j))
-            if i < height - 1 and matrix[i + 1][j] > 0:
+            if i < height - 1 and self.matrix[i + 1][j] < 1:
                 neighbor.append((i + 1, j))
-            if j > 0 and matrix[i][j - 1] > 0:
+            if j > 0 and self.matrix[i][j - 1] < 1:
                 neighbor.append((i, j - 1))
-            if j < width - 1 and matrix[i][j + 1] > 0:
+            if j < width - 1 and self.matrix[i][j + 1] < 1:
                 neighbor.append((i, j + 1))
 
             for n in neighbor:
@@ -55,49 +56,9 @@ class AStar:
                 if n in visited and visited[n] < next_cost:
                     continue
                 heapq.heappush(frontier, (
-                    self.heuristic(dst, n[0], n[1]) + next_cost, n, [state[1]] + state[2], next_cost,
-                    self.heuristic(dst, n[0], n[1])))
-                counter += 1
+                    self.heuristicFunction(dst, n[0], n[1]) + next_cost, n, [state[1]] + state[2], next_cost,
+                    self.heuristicFunction(dst, n[0], n[1])))
+                expandNodeCounter += 1
 
         if state[0] != dst:
             return path
-
-
-    '''
-    src = (0, 0)
-    dst = (3, 6)
-
-    path = self.aStar(matrix)
-
-    if len(path) != 0:
-        print("path1 is:")
-        print(path, "\n")
-        print("cost of shortest path1 is:\t", len(path))
-        print("number of expanded node is:\t", counter)
-
-        aStar_traversal1 = []
-        for item in path:
-            item = item[0] * 20 + item[1]
-            aStar_traversal1.append(item)
-
-
-    else:
-        print("shortest path doesn't exist")
-
-    src = (3, 6)
-    dst = (15, 15)
-
-    path = aStar(matrix)
-
-    if len(path) != 0:
-        print("path2 is:")
-        print(path, "\n")
-        print("cost of shortest path2 is:\t", len(path))
-        print("number of expanded node is:\t", counter)
-
-        aStar_traversal2 = []
-        for item in path:
-            item = item[0] * 20 + item[1]
-            aStar_traversal2.append(item)'''
-
-    # printMatrixWithPath("A *", matrix, aStar_traversal1 + aStar_traversal2)
