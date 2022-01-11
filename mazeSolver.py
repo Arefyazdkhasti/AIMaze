@@ -18,7 +18,6 @@ for row in matrix:
 
 # region figure binary matrix
 binaryMatrix0 = [[0 for x in range(20)] for y in range(20)]
-binaryMatrix0_pashmam = [[0 for x in range(20)] for y in range(20)]
 matrix_with_holes_as_wall = [[0 for x in range(20)] for y in range(20)]
 # for 3 new isPath i had to use this method
 matrix_with_holes_as_wall_with_one = [[0 for x in range(20)] for y in range(20)]
@@ -28,11 +27,9 @@ for row in range(0, 20):
     for col in range(0, 20):
         if matrix[row][col] == '-' or matrix[row][col] == 'F' or matrix[row][col] == 'A' or matrix[row][col] == 'H':
             binaryMatrix0[row][col] = 0
-            binaryMatrix0_pashmam[row][col] = 0
             matrix_with_holes_as_path[row][col] = 0
         elif matrix[row][col] == 'W':
             binaryMatrix0[row][col] = 1
-            binaryMatrix0_pashmam[row][col] = 1
             matrix_with_holes_as_path[row][col] = -1
 
         if matrix[row][col] == '-' or matrix[row][col] == 'F' or matrix[row][col] == 'A':
@@ -126,7 +123,6 @@ if holeLessPathForFirstDst:
         for col in range(0, 7):
             if matrix[row][col] == 'H':
                 binaryMatrix0[row][col] = 1
-                binaryMatrix0_pashmam[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
     if (isPath(matrix_with_holes_as_wall, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 4, 8)):
@@ -134,14 +130,12 @@ else:
             for col in range(0, 7):
                 if matrix[row][col] == 'H':
                     binaryMatrix0[row][col] = 1
-                    binaryMatrix0_pashmam[row][col] = 1
 
 if holeLessPathForSecondDst:
     for row in range(3, 20):
         for col in range(7, 20):
             if matrix[row][col] == 'H':
                 binaryMatrix0[row][col] = 1
-                binaryMatrix0_pashmam[row][col] = 1
 else:
     for i in matrix_with_holes_as_wall_with_one:
         print(i)
@@ -222,7 +216,7 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
 src1 = (0, 0)
 dst1 = (3, 6)
 aStar = AStar(binaryMatrix0)
-path1_AStar = aStar.aStar(src1, dst1)
+path1_AStar, cost1_AStar = aStar.aStar(src1, dst1)
 aStar_traversal1 = []
 aStar_traversal2 = []
 
@@ -237,7 +231,7 @@ else:
 src2 = (3, 6)
 dst2 = (15, 15)
 aStar = AStar(binaryMatrix0)
-path2_AStar = aStar.aStar(src2, dst2)
+path2_AStar, cost2_AStar = aStar.aStar(src2, dst2)
 
 if len(path2_AStar) != 0:
 
@@ -250,14 +244,14 @@ else:
 final_path = list(aStar_traversal1 + aStar_traversal2)
 # 66 appear twice in the list one for dst of path1 and two for src of path2
 final_path.remove(66)
-printMatrixWithPath("A *", matrix_AStar, final_path)
+printMatrixWithPath("A *", matrix_AStar, final_path , cost1_AStar + cost2_AStar)
 
 # endregion
 
 # region UCS
 ucs = UniformCostSearch(binaryMatrix0)
-path1_ucs = ucs.ucsShortestPath((0, 0), (3, 6))
-path2_ucs = ucs.ucsShortestPath((3, 6), (15, 15))
+path1_ucs, cost1_ucs = ucs.ucsShortestPath((0, 0), (3, 6))
+path2_ucs, cost2_ucs = ucs.ucsShortestPath((3, 6), (15, 15))
 total_cost = path1_ucs[0] + path2_ucs[0]
 final_path = list(path1_ucs[1] + path2_ucs[1])
 # (3,6) appeared twice
@@ -270,13 +264,13 @@ for item in final_path:
     traversal_ucs.append(item)
 
 # print(traversal)
-printMatrixWithPath("Uniform Cost Search", matrix_USF, traversal_ucs)
+printMatrixWithPath("Uniform Cost Search", matrix_USF, traversal_ucs, cost1_ucs + cost2_ucs)
 # endregion
 
 # region IDDFS
 
 ids1 = IterativeDeepeningSearch(binaryMatrix0_IDDFS, (0, 0), (3, 6))
-numberOfVisitedNodes, IterativeParent, IterativeCounter = ids1.iterative_search(400)
+numberOfVisitedNodes1, IterativeParent1, IterativeCounter1 = ids1.iterative_search(400)
 path_list1_iddfs = ids1.getPath()
 
 ids2 = IterativeDeepeningSearch(binaryMatrix0_IDDFS, (3, 6), (15, 15))
@@ -291,7 +285,7 @@ final_path_IDDFS = []
 for item in path_IDDFS:
     final_path_IDDFS.append(item[0] * 20 + item[1])
 
-printMatrixWithPath("Iterative Deepening Search", matrix_IDDFS, final_path_IDDFS)
+printMatrixWithPath("Iterative Deepening Search", matrix_IDDFS, final_path_IDDFS, IterativeCounter1 + IterativeCounter2)
 
 
 # endregion
@@ -349,7 +343,7 @@ path_bfs2, len2 = BFS(graph, 66, 315)
 final_path_bfs = path_bfs1 + path_bfs2
 final_path_bfs.remove(66)
 
-printMatrixWithPath("BFS", matrix_BFS, final_path_bfs)
+printMatrixWithPath("BFS", matrix_BFS, final_path_bfs , len1+len2)
 # endregion
 
 '''

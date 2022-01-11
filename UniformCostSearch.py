@@ -1,6 +1,9 @@
 
 
 class UniformCostSearch:
+
+    expandedNodeCounter = 0
+
     def __init__(self, grid):
         self.grid = grid
 
@@ -22,20 +25,26 @@ class UniformCostSearch:
                     yield (nx, ny, nz, np)
 
     def flood(self, frontier):
+        global expandedNodeCounter
+        expandedNodeCounter = 0
         res = list(self.adjacent(frontier))
         for (x, y, z, p) in frontier:
             self.grid[x][y] = 1
-        return res
+            expandedNodeCounter += 1
+        return res, expandedNodeCounter
 
     def ucsShortestPath(self, start, end):
+        global expandedNodeCounter
+        expandedNodeCounter = 0
         start, end = tuple(start), tuple(end)
         frontier = [(start[0], start[1], 0, [])]
         res = []
         while frontier and self.grid[end[0]][end[1]] == 0:
-            frontier = self.flood(frontier)
+            frontier, expandedNodes = self.flood(frontier)
+            expandedNodeCounter += expandedNodes
             for (x, y, z, p) in frontier:
                 if (x, y) == end:
                     res.append((z, p + [(x, y)]))
         if not res:
-            return ()
-        return sorted(res)[0]
+            return (), expandedNodeCounter
+        return sorted(res)[0], expandedNodeCounter

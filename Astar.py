@@ -36,7 +36,7 @@ class AStar:
             if (i, j) == (dst[0], dst[1]):
                 path = [state[1]] + state[2]
                 path.reverse()
-                return path
+                return path, expandNodeCounter
             # set the cost (path is enough since the heuristic won't change)
             visited[(i, j)] = state[3]
             # explore neighbor
@@ -61,4 +61,4 @@ class AStar:
                 expandNodeCounter += 1
 
         if state[0] != dst:
-            return path
+            return path, expandNodeCounter
