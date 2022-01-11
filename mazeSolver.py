@@ -128,8 +128,9 @@ if holeLessPathForFirstDst:
                 binaryMatrix0_pashmam[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
-    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5, 7) or isPath(
-            matrix_with_holes_as_wall_with_one, 0, 0, 4, 8):
+    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 6, 7) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 5,
+                                                                        7) or isPath(
+        matrix_with_holes_as_wall_with_one, 0, 0, 4, 8):
         for row in range(0, 4):
             for col in range(0, 7):
                 if matrix[row][col] == 'H':
@@ -143,13 +144,13 @@ if holeLessPathForSecondDst:
                 binaryMatrix0[row][col] = 1
                 binaryMatrix0_pashmam[row][col] = 1
 else:
-    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 18, 16) or isPath(
-            matrix_with_holes_as_wall_with_one, 0, 0, 16, 17):
+    if isPath(matrix_with_holes_as_wall_with_one, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall_with_one, 0, 0, 18,
+                                                                          16) or isPath(
+        matrix_with_holes_as_wall_with_one, 0, 0, 16, 17):
         for row in range(3, 16):
             for col in range(7, 16):
                 if matrix[row][col] == 'H':
                     binaryMatrix0[row][col] = 1
-
 
 # endregion
 
@@ -175,15 +176,14 @@ for i in range(0, 20):
             neighbors = []
         graph[i * 20 + j] = neighbors
 
-
 # endregion
 
 matrix_IDDFS = matrix
 matrix_AStar = matrix
 matrix_USF = matrix
 
+
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
-    print("*************" ,_path)
     print(colored("------------------------- Algorithm: " + algorithm_name + "------------------------", 'green'))
 
     for row in range(0, len(_matrix)):
@@ -213,11 +213,11 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
     print("Cost of the Shortest path is: ", len(_path))
     if expandedNodes != 0:
         print("Expand Node Numbers: ", expandedNodes)
-    _path.clear()
+
+    return _matrix
 
 
-
-# todo path for IDDFS is wrong!!! - hole BFS return wrong due to wrong adjacency list which not updated with holes
+# todo path for IDDFS is wrong - hole BFS return wrong due to wrong adjacency list which not updated with holes
 
 
 # region A*
@@ -297,7 +297,6 @@ printMatrixWithPath("Iterative Deepening Search", matrix_IDDFS, final_path_IDDFS
 
 # endregion
 
-'''
 # region BFS
 def BFS(adj_list, start_node, target_node):
     # Set of visited nodes to prevent loops
@@ -348,13 +347,15 @@ def BFS(adj_list, start_node, target_node):
 
 path_bfs1, len1 = BFS(graph, 0, 66)
 path_bfs2, len2 = BFS(graph, 66, 315)
+print("bfs path 1 ----------------> ", path_bfs1)
+print("bfs path 2 ----------------> ", path_bfs2)
 final_path_bfs = path_bfs1 + path_bfs2
 final_path_bfs.remove(66)
 
-matrix_BFS = matrix
-printMatrixWithPath("BFS", matrix_BFS, final_path_bfs, len1 + len2)
+print("bfs path final ----------------> ", final_path_bfs)
+
+printMatrixWithPath("BFS", matrix, path_bfs1)
 # endregion
-'''
 
 '''
 binaryMatrixBackUp = binaryMatrix0
