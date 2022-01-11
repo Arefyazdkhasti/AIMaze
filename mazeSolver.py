@@ -157,19 +157,19 @@ else:
 graph = dict()
 for i in range(0, 20):
     for j in range(0, 20):
-        if matrix[i][j] != 'W':
+        if binaryMatrix0[i][j] != 1:
             neighbors = []
             if j - 1 >= 0:
-                if matrix[i][j - 1] != 'W':
+                if binaryMatrix0[i][j - 1] != 1:
                     neighbors.append(20 * i + j - 1)
             if j + 1 < 20:
-                if matrix[i][j + 1] != 'W':
+                if binaryMatrix0[i][j + 1] != 1:
                     neighbors.append(20 * i + j + 1)
             if i + 1 < 20:
-                if matrix[i + 1][j] != 'W':
+                if binaryMatrix0[i + 1][j] != 1:
                     neighbors.append(20 * (i + 1) + j)
             if i - 1 >= 0:
-                if matrix[i - 1][j] != 'W':
+                if binaryMatrix0[i - 1][j] != 1:
                     neighbors.append(20 * (i - 1) + j)
         else:
             neighbors = []
@@ -185,13 +185,14 @@ binaryMatrix0_IDDFS = copy.deepcopy(binaryMatrix0)
 
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
     print(colored("------------------------- Algorithm: " + algorithm_name + "------------------------", 'green'))
-
+    holeCounter = 0
     for row in range(0, len(_matrix)):
         for col in range(0, len(_matrix)):
             if 20 * row + col in _path:
                 if _matrix[row][col] == 'H' or _matrix[row][col] == 'J':
-                    print(colored("you pass over holes is " + str(row) + " " + str(col), 'magenta'))
+                    print(colored("you pass over hole is " + str(row) + " " + str(col) + " (-10 points added to your path cost)", 'magenta'))
                     _matrix[row][col] = "J"  # holes that you have to pass!
+                    holeCounter += 1
                 else:
                     _matrix[row][col] = "*"
 
@@ -210,14 +211,12 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
         print()
 
     print("Shortest Path is: ", _path)
-    print("Cost of the Shortest path is: ", len(_path))
+    print("Cost of the Shortest path is: ", len(_path) + (holeCounter * 10))
     if expandedNodes != 0:
         print("Expand Node Numbers: ", expandedNodes)
 
     return _matrix
 
-
-# todo path for IDDFS is wrong - hole BFS return wrong due to wrong adjacency list which not updated with holes
 
 # region A*
 src1 = (0, 0)
@@ -347,12 +346,8 @@ def BFS(adj_list, start_node, target_node):
 
 path_bfs1, len1 = BFS(graph, 0, 66)
 path_bfs2, len2 = BFS(graph, 66, 315)
-print("bfs path 1 ----------------> ", path_bfs1)
-print("bfs path 2 ----------------> ", path_bfs2)
 final_path_bfs = path_bfs1 + path_bfs2
 final_path_bfs.remove(66)
-
-print("bfs path final ----------------> ", final_path_bfs)
 
 printMatrixWithPath("BFS", matrix_BFS, final_path_bfs)
 # endregion
