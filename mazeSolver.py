@@ -85,7 +85,6 @@ isPathFromF1ToF2WithoutHoles = isPath(matrix_with_holes_as_wall, 4, 7, 16, 16)
 isPathFromStartToF1WithHoles = isPath(matrix_with_holes_as_path, 0, 0, 4, 7)
 isPathFromF1ToF2WithHoles = isPath(matrix_with_holes_as_path, 4, 7, 16, 16)
 
-# TODO deal with these different occasions
 if isPathFromStartToF1WithoutHoles:
     if isPathFromF1ToF2WithoutHoles:
         print("There are path from start to F1 and from F1 to F2 (holes consider as a wall)")
@@ -125,7 +124,8 @@ if holeLessPathForFirstDst:
                 binaryMatrix0[row][col] = 1
             # binaryMatrix1[row][col] = 0
 else:
-    if (isPath(matrix_with_holes_as_wall, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 5, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 4, 8)):
+    if (isPath(matrix_with_holes_as_wall, 0, 0, 6, 7)) or (isPath(matrix_with_holes_as_wall, 0, 0, 5, 7)) or (
+            isPath(matrix_with_holes_as_wall, 0, 0, 4, 8)):
         for row in range(0, 6):
             for col in range(0, 7):
                 if matrix[row][col] == 'H':
@@ -137,9 +137,8 @@ if holeLessPathForSecondDst:
             if matrix[row][col] == 'H':
                 binaryMatrix0[row][col] = 1
 else:
-    for i in matrix_with_holes_as_wall_with_one:
-        print(i)
-    if isPath(matrix_with_holes_as_wall, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall, 0, 0, 18, 16) or isPath(matrix_with_holes_as_wall, 0, 0, 16, 17):
+    if isPath(matrix_with_holes_as_wall, 0, 0, 17, 16) or isPath(matrix_with_holes_as_wall, 0, 0, 18, 16) or isPath(
+            matrix_with_holes_as_wall, 0, 0, 16, 17):
         for row in range(3, 20):
             for col in range(7, 20):
                 if matrix[row][col] == 'H':
@@ -177,14 +176,17 @@ matrix_USF = copy.deepcopy(matrix)
 matrix_BFS = copy.deepcopy(matrix)
 binaryMatrix0_IDDFS = copy.deepcopy(binaryMatrix0)
 
+
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
-    print(colored("------------------------- Algorithm: " + algorithm_name + "------------------------", 'green'))
+    print(colored("------------------------- Algorithm: " + algorithm_name + " ------------------------", 'green'))
     holeCounter = 0
     for row in range(0, len(_matrix)):
         for col in range(0, len(_matrix)):
             if 20 * row + col in _path:
                 if _matrix[row][col] == 'H' or _matrix[row][col] == 'J':
-                    print(colored("you pass over hole is " + str(row) + " " + str(col) + " (-10 points added to your path cost)", 'magenta'))
+                    print(colored(
+                        "you pass over hole is " + str(row) + " " + str(col) + " (-10 points added to your path cost)",
+                        'magenta'))
                     _matrix[row][col] = "J"  # holes that you have to pass!
                     holeCounter += 1
                 else:
@@ -244,7 +246,8 @@ else:
 final_path = list(aStar_traversal1 + aStar_traversal2)
 # 66 appear twice in the list one for dst of path1 and two for src of path2
 final_path.remove(66)
-printMatrixWithPath("A *", matrix_AStar, final_path , cost1_AStar + cost2_AStar)
+final_cost_AStar = cost1_AStar + cost2_AStar
+printMatrixWithPath("A *", matrix_AStar, final_path, final_cost_AStar)
 
 # endregion
 
@@ -252,19 +255,18 @@ printMatrixWithPath("A *", matrix_AStar, final_path , cost1_AStar + cost2_AStar)
 ucs = UniformCostSearch(binaryMatrix0)
 path1_ucs, cost1_ucs = ucs.ucsShortestPath((0, 0), (3, 6))
 path2_ucs, cost2_ucs = ucs.ucsShortestPath((3, 6), (15, 15))
-total_cost = path1_ucs[0] + path2_ucs[0]
+# total_cost = path1_ucs[0] + path2_ucs[0]
 final_path = list(path1_ucs[1] + path2_ucs[1])
 # (3,6) appeared twice
 final_path.remove((3, 6))
-# print(final_path)
 
 traversal_ucs = []
 for item in final_path:
     item = item[0] * 20 + item[1]
     traversal_ucs.append(item)
 
-# print(traversal)
-printMatrixWithPath("Uniform Cost Search", matrix_USF, traversal_ucs, cost1_ucs + cost2_ucs)
+expand_ucs = cost1_ucs + cost2_ucs
+printMatrixWithPath("Uniform Cost Search", matrix_USF, traversal_ucs, expand_ucs)
 # endregion
 
 # region IDDFS
@@ -292,16 +294,12 @@ printMatrixWithPath("Iterative Deepening Search", matrix_IDDFS, final_path_IDDFS
 
 # region BFS
 def BFS(adj_list, start_node, target_node):
-    # Set of visited nodes to prevent loops
     visited = set()
     queue = Queue()
 
-    # queue for all items that put in the main queue without pop anything
     bfs_queue = Queue()
-    # numbers of expanded nodes
     length = 0
 
-    # Add the start_node to the queue and visited list
     queue.put(start_node)
     bfs_queue.put(start_node)
     visited.add(start_node)
@@ -310,7 +308,6 @@ def BFS(adj_list, start_node, target_node):
     parent = dict()
     parent[start_node] = None
 
-    # Perform step 3
     path_found = False
     while not queue.empty():
         current_node = queue.get()
@@ -327,7 +324,6 @@ def BFS(adj_list, start_node, target_node):
 
     length = len(bfs_queue.queue) - len(queue.queue)
 
-    # Path reconstruction
     path = []
     if path_found:
         path.append(target_node)
@@ -343,54 +339,5 @@ path_bfs2, len2 = BFS(graph, 66, 315)
 final_path_bfs = path_bfs1 + path_bfs2
 final_path_bfs.remove(66)
 
-printMatrixWithPath("BFS", matrix_BFS, final_path_bfs , len1+len2)
+printMatrixWithPath("BFS", matrix_BFS, final_path_bfs, len1 + len2)
 # endregion
-
-'''
-binaryMatrixBackUp = binaryMatrix0
-
-
-def bfs(visit_complete, graph, current_node, target_node):
-    visit_complete.append(current_node)
-    queue = []
-    pth = []
-    queue.append(current_node)
-
-    while queue:
-        s = queue.pop(0)
-        print(s, end=" ")
-        pth.append(s)
-        if s == target_node:
-            break
-
-        for neighbour in graph[s]:
-            if neighbour not in visit_complete:
-                visit_complete.append(neighbour)
-                queue.append(neighbour)
-    return pth
-
-
-pth = bfs([], graph, 0, 66)
-printMatrixWithPath("SGHIT", matrix, pth)
-
-
-def depth_first_search(_graph, start, end):
-    stack = [start]
-    visited = set()
-    while stack:
-        vertex = stack.pop()
-        if vertex in visited:
-            continue
-        yield vertex
-        visited.add(vertex)
-        if vertex == end:
-            break
-        for neighbor in _graph[vertex]:
-            stack.append(neighbor)
-    return visited
-
-
-shit1 = list(depth_first_search(graph, 0, 66))
-matrix_DFS1 = matrix
-printMatrixWithPath("DFS 0 till 66", matrix_DFS1, shit1)
-'''
