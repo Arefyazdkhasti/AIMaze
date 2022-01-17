@@ -78,17 +78,6 @@ public class Maze {
             e.printStackTrace();
         }
 
-        /*String[][] arr = {{"-", "-", "-", "W", "-", "-", "-", "-"},
-                {"-", "-", "-", "W", "-", "-", "-", "-"},
-                {"W", "W", "W", "W", "-", "-", "-", "-"},
-                {"-", "-", "-", "-", "-", "-", "-", "-"},
-                {"-", "-", "-", "-", "-", "-", "-", "-"}};
-
-        if (isPath(arr, 5, 8))
-            System.out.println("Yes");
-        else
-            System.out.println("No");*/
-
     }
 
     private static void generateWallsAndHoles(String[][] maze) {
@@ -102,7 +91,7 @@ public class Maze {
             }
         }
 
-        /*int hole_count = 0;
+        int hole_count = 0;
         while (hole_count < 20) {
             int rand_row = randomNumber(0, 19);
             int rand_col = randomNumber(0, 19);
@@ -111,7 +100,7 @@ public class Maze {
                 hole_count++;
             }
         }
-        System.out.println(wall_count + " " + hole_count);*/
+        System.out.println(wall_count + " " + hole_count);
     }
 
     private static void fillMaze1And2() {
@@ -125,7 +114,6 @@ public class Maze {
     }
 
     private static boolean checkPossibility(int rand_row, int rand_col) {
-        //TODO possible to remove around fruits because isPath return false if no path to fruits found and generate another maze
         return (rand_row != 0 || rand_col != 1) && (rand_row != 1 || rand_col != 0) //around start point
                 && (rand_row != 2 || rand_col != 6) && (rand_row != 3 || rand_col != 5) //around fruit 1
                 && (rand_row != 3 || rand_col != 7) && (rand_row != 4 || rand_col != 6) //around fruit 1
@@ -143,7 +131,7 @@ public class Maze {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (matrix[i][j].equals(" W ")/* || matrix[i][j].equals(" H ")*/) {
+                if (matrix[i][j].equals(" W ")) {
                     arr[i][j] = -1;
                 } else
                     arr[i][j] = 0;

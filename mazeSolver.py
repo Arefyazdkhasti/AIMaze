@@ -4,6 +4,7 @@ from UniformCostSearch import UniformCostSearch
 from IterativeDeepeningSearch import IterativeDeepeningSearch
 from queue import Queue
 from termcolor import colored
+import matplotlib.pyplot as plt
 
 filePath = "generated_maze.txt"
 
@@ -180,6 +181,7 @@ binaryMatrix0_IDDFS = copy.deepcopy(binaryMatrix0)
 def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
     print(colored("------------------------- Algorithm: " + algorithm_name + " ------------------------", 'green'))
     holeCounter = 0
+    showMatrix = [[0 for x in range(20)] for y in range(20)]
     for row in range(0, len(_matrix)):
         for col in range(0, len(_matrix)):
             if 20 * row + col in _path:
@@ -196,14 +198,19 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
         for col in range(0, len(_matrix)):
             if _matrix[row][col] == "*":
                 print(colored(" * ", 'blue'), end=" ")
+                showMatrix[row][col] = 1.5
             elif _matrix[row][col] == "W":
                 print(colored(" W ", 'red'), end=" ")
+                showMatrix[row][col] = 1
             elif _matrix[row][col] == "J":
                 print(colored(" J ", 'yellow'), end=" ")
+                showMatrix[row][col] = 3.3
             elif _matrix[row][col] == "H":
                 print(" H ", end=" ")
+                showMatrix[row][col] = 2
             else:
                 print(" " + _matrix[row][col] + " ", end=" ")
+                showMatrix[row][col] = 4.75
         print()
 
     print("Shortest Path is: ", _path)
@@ -211,6 +218,11 @@ def printMatrixWithPath(algorithm_name, _matrix, _path, expandedNodes=0):
     if expandedNodes != 0:
         print("Expand Node Numbers: ", expandedNodes)
 
+    fig = plt.figure(figsize=(8, 6))
+    plt.imshow(showMatrix, cmap="Set1")
+    plt.title(algorithm_name)
+    plt.colorbar()
+    plt.show()
     return _matrix
 
 
